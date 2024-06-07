@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.0/codemirror.min.js'></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.0/mode/go/go.min.js"></script>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.0/codemirror.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.39.0/theme/darcula.min.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="font-reg black_background flex_column fullsize basic_font_family">
+    <nav class="theme_background" style="width: 100%; height: fit-content; padding-top: 0.5%; padding-bottom: 0.5%;">
+        <div class="flex_vertical_center flex_horizonal_center" style="width: 100%; justify-content: space-between;">
+            <div class="flex_row flex_vertical_center" style="margin-left: 5%;">
+                <a href="https://wopslang.github.io" style="text-decoration: none;"><img class="nomargin" src="{{ url_for('static', filename='img/logo3.png') }}" alt="Wopslang Logo" width="50em" height="50em" style="display: block;"></a>
+            </div>
+            <div class="flex_row flex_vertical_center" style="justify-content: flex-end; padding-right: 5%;">
+                <h1 class="font-reg nav_margin" style="font-size: 16px;">Why Wopslang</h1>
+                <h1 class="font-reg nav_margin" style="font-size: 16px;">Get Started</h1>
+                <a class="font-reg nav_margin nav_a" href="./docs/" target='_blank'>Docs</a>
+                <a class="font-reg nav_margin nav_a" href="." target='_blank'>Playground</a>
+            </div>
+        </div>
+    </nav>
+    <form id="form" class="fullsize" action="/" method="post">
+    <nav class="darkblack_background" style="width: 100%; height: fit-content; padding-top: 2px; padding-bottom: 2px;">
+        <div class="flex_vertical_center flex_horizonal_center" style="width: 100%; justify-content: space-between;">
+            <div class="flex_row flex_vertical_center" style="margin-left: 5%; padding: 1%">
+                <h1 class="font-reg nav_margin" style="font-size: 16px;">Wops Playground</h1>
+            </div>
+            <div class="flex_row flex_vertical_center" style="justify-content: flex-end; padding-right: 5%;">
+                <input type="submit" class="button nav_a" value="Run">
+                </input>
+            </div>
+        </div>
+    </nav>
+    <section class="fullsize black_background flex_column flex_horizonal_center flex_vertical_center" style="min-width: 500px; min-height: 500px; height: 90%">
+           <div style="width:100%; margin:0; height: 70%">
+               <textarea id="code" name="code"></textarea>
+            </div>
+           <div style="width:100%; margin:0; height: 30%;" class="flex_row">
+               <textarea id="in" name="input"></textarea>
+               <textarea id="out"></textarea>
+            </div>
+    </section>
+    <textarea id="inputh" style="display: none;">{{inp}}</textarea>
+    <textarea id="codeh" style="display: none;">{{code}}</textarea>
+    <textarea id="output" style="display: none;">{{output}}</textarea>
+    </form>
+    <script>
+    var textarea = document.getElementById('code');
+    var editor = CodeMirror.fromTextArea(textarea, {
+        lineNumbers: true,  
+        lineWrapping: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        theme: "darcula",   
+        mode: 'text/x-go',
+        val: textarea.value
+    });
+    editor.setSize("100%", "100%");
+    editor.getDoc().setValue(document.getElementById('codeh').textContent)
+
+    var outputarea = document.getElementById('out');
+    var out = CodeMirror.fromTextArea(outputarea, {
+        lineNumbers: true,  
+        lineWrapping: true,
+        theme: "darcula",   
+        readOnly: "nocursor",
+        mode: 'text',
+        val: textarea.value
+    });
+    out.setSize("100%", "100%");
+    x = document.getElementById('output').textContent
+    if (x.includes('\[31m')) {
+        x = x.replace('\[31m', '').replace('\[m', '')
+    }
+    out.getDoc().setValue(x)
+
+    var inarea = document.getElementById('in');
+    var inp = CodeMirror.fromTextArea(inarea, {
+        lineNumbers: true,  
+        lineWrapping: true,
+        theme: "darcula",   
+        mode: 'text',
+        val: textarea.value
+    });
+    inp.setSize("100%", "100%");
+    inp.getDoc().setValue(document.getElementById('inputh').textContent)
+    </script>
+</body>
+</html>

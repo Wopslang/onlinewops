@@ -1,0 +1,4 @@
+int a = 100
+for i in 0~a~1 $
+    out("hi")
+;
